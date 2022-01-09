@@ -1,0 +1,6 @@
+matplotlib==3.4.3
+mnist==0.2.2
+numpy==1.19.5
+python_mnist==0.7
+scikit_learn==1.0.2
+torch==1.10.0
