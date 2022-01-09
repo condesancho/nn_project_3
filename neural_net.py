@@ -1,9 +1,7 @@
 import torch
-from torch import optim
 import torch.nn as nn
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader
 
-import numpy as np
 import matplotlib.pyplot as plt
 
 from mnist_dataset import MnistTest, MnistTrain

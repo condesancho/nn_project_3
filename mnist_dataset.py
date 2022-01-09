@@ -7,14 +7,11 @@ import numpy as np
 
 from mnist import MNIST
 
-from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
-
 
 class MnistTrain(Dataset):
     def __init__(self):
         # Change './samples' to the path of the files
-        mndata = MNIST("../samples")
+        mndata = MNIST("./samples")
         self.x, self.y = mndata.load_training()
 
         # Convert from list to numpy array
@@ -37,7 +34,7 @@ class MnistTrain(Dataset):
 class MnistTest(Dataset):
     def __init__(self):
         # Change './samples' to the path of the files
-        mndata = MNIST("../samples")
+        mndata = MNIST("./samples")
         self.x, self.y = mndata.load_testing()
 
         # Convert from list to numpy array
