@@ -23,7 +23,7 @@ test_data.x = test_data.x.reshape(test_data.__len__(), 1, 28, 28)
 # Initialize variables
 learning_rate = 0.01
 batch = 1000
-n_epochs = 25
+n_epochs = 20
 
 
 # Create the model and pass it to the device
@@ -66,7 +66,7 @@ plt.ylabel("RMSE")
 plt.legend(["Train", "Test"])
 plt.title("Train vs Test Losses")
 
-for epoch in range(0, n_epochs, 4):
+for epoch in range(0, n_epochs, 6):
     plt.figure(figsize=(9, 2))
     imgs = train_outputs[epoch][1].detach().cpu().numpy()
     recogn = train_outputs[epoch][2].detach().cpu().numpy()

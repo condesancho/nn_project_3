@@ -29,8 +29,8 @@ hidden_layers = [254, 128, 64]
 middle_layer = 9
 
 # Create dataloaders
-train_loader = DataLoader(dataset=train_data, batch_size=batch, shuffle=True)
-test_loader = DataLoader(dataset=test_data, batch_size=batch, shuffle=True)
+train_loader = DataLoader(dataset=train_data, batch_size=batch, shuffle=False)
+test_loader = DataLoader(dataset=test_data, batch_size=batch, shuffle=False)
 
 
 exec_times = []

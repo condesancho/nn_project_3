@@ -22,13 +22,13 @@ test_data = MnistTest()
 # Initialize variables
 learning_rate = 1e-3
 batch = 1000
-n_epochs = 10
+n_epochs = 20
 hidden_layers = [254, 128, 64]
 middle_layer = 9
 
 
 # Create the model and pass it to the device
-model = Autoencoder(hidden_layers, middle_layer).to(device)
+model = Autoencoder().to(device)
 
 # Loss function and optimizer
 criterion = nn.MSELoss()
@@ -67,7 +67,7 @@ plt.ylabel("RMSE")
 plt.legend(["Train", "Test"])
 plt.title("Train vs Test Losses")
 
-for epoch in range(0, n_epochs, 4):
+for epoch in range(0, n_epochs, 6):
     plt.figure(figsize=(9, 2))
     imgs = train_outputs[epoch][1].detach().cpu().numpy()
     recogn = train_outputs[epoch][2].detach().cpu().numpy()
