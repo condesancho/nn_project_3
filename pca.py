@@ -6,10 +6,10 @@ from sklearn.decomposition import PCA
 from sklearn.metrics import mean_squared_error
 
 import matplotlib.pyplot as plt
-
+import time
 
 # Import data from the folder
-mndata = MNIST("../samples")
+mndata = MNIST("./samples")
 
 xtrain, ytrain = mndata.load_training()
 xtest, ytest = mndata.load_testing()
@@ -30,36 +30,49 @@ test_scaler = test_scaler.fit(xtest)
 train = train_scaler.transform(xtrain)
 test = test_scaler.transform(xtest)
 
-# Initialize the PCA model
-pca = PCA(n_components=300)
+n_components = [2, 9, 100, 0.9, 0.95]
 
-pca = pca.fit(train)
+plt.figure(figsize=(5, len(n_components)))
+plt.title("Autoencoded images for different number of components")
+images = xtrain[:5, :].reshape(-1, 28, 28)
+for j in range(5):
+    plt.subplot(len(n_components) + 1, 5, j + 1)
+    plt.imshow(images[j, :, :], cmap="gray")
+    plt.axis("off")
 
-# Encode
-pca_transformed_train = pca.transform(train)
-pca_transformed_test = pca.transform(test)
+for i, components in enumerate(n_components):
+    # Start timer
+    start_time = time.time()
 
-# Decode
-decoded_train = pca.inverse_transform(pca_transformed_train)
-decoded_test = pca.inverse_transform(pca_transformed_test)
+    # Initialize the PCA model
+    pca = PCA(n_components=components)
 
-decoded_train = train_scaler.inverse_transform(decoded_train)
-decoded_test = test_scaler.inverse_transform(decoded_test)
+    pca = pca.fit(train)
 
-train_rmse = mean_squared_error(xtrain, decoded_train, squared=False)
-test_rmse = mean_squared_error(xtest, decoded_test, squared=False)
+    # Encode
+    pca_transformed_train = pca.transform(train)
+    pca_transformed_test = pca.transform(test)
 
-print(f"The RMSE of the train set is: {train_rmse}")
-print(f"The RMSE of the test set is: {test_rmse}")
+    # Decode
+    decoded_train = pca.inverse_transform(pca_transformed_train)
+    decoded_test = pca.inverse_transform(pca_transformed_test)
 
-first_img = xtrain[0, :]
-first_img = first_img.reshape(28, 28)
+    decoded_train = train_scaler.inverse_transform(decoded_train)
+    decoded_test = test_scaler.inverse_transform(decoded_test)
 
-decoded_first_image = decoded_train[0, :]
-decoded_first_image = decoded_first_image.reshape(28, 28)
+    train_rmse = mean_squared_error(xtrain, decoded_train, squared=False)
+    test_rmse = mean_squared_error(xtest, decoded_test, squared=False)
 
-plot1 = plt.figure(1)
-plt.imshow(first_img, cmap="gray")
-plot2 = plt.figure(2)
-plt.imshow(decoded_first_image, cmap="gray")
+    print(f"For {pca.n_components_} components")
+    print(f"The RMSE of the train set is: {train_rmse}")
+    print(f"The RMSE of the test set is: {test_rmse}")
+    print("Time passed: %s seconds." % (time.time() - start_time))
+
+    reconstructed = decoded_train[:5, :].reshape(-1, 28, 28)
+
+    for j in range(5):
+        plt.subplot(len(n_components) + 1, 5, (i + 1) * 5 + j + 1)
+        plt.imshow(reconstructed[j, :, :], cmap="gray")
+        plt.axis("off")
+
 plt.show()
